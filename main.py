@@ -3,6 +3,8 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Hide TensorFlow warnings
+tf.get_logger().setLevel("ERROR")          # Hide Keras warnings
 
 app = Flask(__name__)
 model = tf.keras.models.load_model("keras_model.h5")  # Your trained model
@@ -16,4 +18,5 @@ def predict():
     return jsonify({"class": str(np.argmax(prediction)), "confidence": float(np.max(prediction))})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)  
+    app.run()
+
